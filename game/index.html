@@ -17,8 +17,22 @@
             font-family: "Titillium Web", Arial, sans-serif;
             /* border: 1px solid grey; */
         }
+        main, header, footer {
+            border: 1px solid black;
+            margin-top: 0;
+            margin-bottom:0;
+            margin-left: auto;
+            margin-right: auto;
+            width: 80vw;
+            padding: 2rem;
+        }
+        main {
+            background-color: #b9b391;
+        }
         body {
             background-color: #eae2b7;
+            background-image: url("images/dig_dug_enemy.jpg");
+            background-size: 10vw;
         }
         footer {
             background-color: #fcbf49;
@@ -56,12 +70,15 @@
             font-weight: 400;
             font-style: normal;
         }
+        .main_logo {
+            margin-left: 50vw;
+        }
     </style>
 </head>
 <body>
     <header style="background-color:#fcbf49;">
-        <object data="images/dig-dug.svg" height="200">
-            <img src="images/dig-dug.png" alt="Dig-Dug logo." height="200">
+        <object class="main_logo" data="images/dig-dug.svg" height="200">
+            <img class = "main_logo" src="images/dig-dug.png" alt="Dig-Dug logo." height="200">
         </object>
         <h1>Dig Dug</h1>
         <img src="images/dig-dug-burnt.png" alt="Screenshot of Dig-Dug.">

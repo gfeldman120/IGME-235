@@ -1,0 +1,16 @@
+* {
+    background-color:antiquewhite;
+}
+header, main, footer {
+    border: 2px solid black;
+    margin: 2vw 5vh;
+    padding: 2vw;
+}
+h1 {
+    text-align: center;
+}
+img {
+    display: block;
+    margin: auto;
+    width: 40vh;
+}

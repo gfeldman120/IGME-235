@@ -1,16 +1,61 @@
 * {
     background-color:antiquewhite;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+body {
+    background-image: url("homeImages/funny_cat_loading.png"), url("homeImages/funny_cat_loading.png");
+    background-size: 5vh;
+    background-repeat: repeat-y;
+    background-position-x: 0.2%, 99.5%;
 }
 header, main, footer {
-    border: 2px solid black;
-    margin: 2vw 5vh;
-    padding: 2vw;
+    border: 0.25vh solid black;
+    background-color: bisque;
+    margin: 1vh 7vh;
+    padding: 1vh;
 }
 h1 {
     text-align: center;
+    padding: 2vh;
+    border: 0.25vh solid black;
 }
 img {
     display: block;
     margin: auto;
+    margin-bottom: 2vh;
     width: 40vh;
+    border: 0.25vh solid black;
+}
+h2, h3, p, ul, li, a, img {
+    background-color: transparent;
+}
+.subtitle {
+    border: 0.25vh solid black;
+    background-color: antiquewhite;
+    padding: 2vh;
+}
+.plaintext {
+    font-size: larger;
+    margin: 2vw;
+}
+#projectLink1:link, #projectLink2:link, #projectLink3:link {
+    color: darkred;
+}
+#projectLink1:visited, #projectLink2:visited, #projectLink3:visited {
+    color: rgb(60, 0, 0);
+}
+#projectLink1:hover, #project2Link:hover, #projectLink3:hover {
+    color: rgb(200, 0, 0);
+}
+#gitLink:link {
+    color: darkgreen;
+}
+#gitLink:visited {
+    color: rgb(0, 60, 0);
+}
+#gitLink:hover {
+    color: rgb(0, 130, 0);
+}
+#projectLink1:active, #projectLink2:active, #projectLink3:active, #projectLink1:focus, #projectLink2:focus, #projectLink3:focus, #gitLink:active, #gitLink:focus {
+    background-color:rgb(255, 255, 255, 0.5);
 }

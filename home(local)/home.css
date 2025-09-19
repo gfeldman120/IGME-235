@@ -1,6 +1,7 @@
 * {
     background-color:antiquewhite;
     font-family: 'Segoe UI', Arial, sans-serif;
+    overflow-wrap: break-word;
 }
 body {
     background-image: url("homeImages/funny_cat_loading.png"), url("homeImages/funny_cat_loading.png");
@@ -18,16 +19,25 @@ h1 {
     text-align: center;
     padding: 2vh;
     border: 0.25vh solid black;
+    font-size: 36pt;
 }
 img {
     display: block;
     margin: auto;
     margin-bottom: 2vh;
-    width: 40vh;
+    width: 30vw;
+    max-width: 60%;
+    min-width: 30%;
     border: 0.25vh solid black;
 }
 h2, h3, p, ul, li, a, img {
     background-color: transparent;
+}
+h2, h3 {
+    font-size: 24pt;
+}
+p, ul {
+    font-size: 13pt;
 }
 .subtitle {
     border: 0.25vh solid black;
@@ -35,7 +45,6 @@ h2, h3, p, ul, li, a, img {
     padding: 2vh;
 }
 .plaintext {
-    font-size: larger;
     margin: 2vw;
 }
 #projectLink1:link, #projectLink2:link, #projectLink3:link {

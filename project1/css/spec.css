@@ -45,8 +45,12 @@ header {
     border-bottom: 1px solid black;
 }
 
-.topicsContent {
-    padding-bottom: 2vh;
+div.topicContent > h2 {
+    font-size: 2.5rem;
+}
+
+div.topicContent > p {
+    font-size: 1.75rem;
 }
 
 .line {

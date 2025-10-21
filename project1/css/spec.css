@@ -1,0 +1,291 @@
+* {
+    text-overflow: ellipsis;
+}
+
+.textTitle {
+    font-size: 1.75rem;
+}
+
+.smallTextTitle {
+    font-size: 1.25rem;
+}
+
+.bigTextTitle {
+    font-size: 3rem;
+}
+
+.textTitle, .smallTextTitle, .bigTextTitle {
+    margin: 0;
+    margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
+}
+
+div {
+    margin: 3px;
+}
+
+header {
+    margin-top: 3vh;
+}
+
+#footerQuote, #smallBoxedTitle {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+}
+
+.topics {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    padding-bottom: 1.5vh;
+    margin-left: 3vw;
+    margin-right: 3vw;
+    justify-content: space-evenly;
+    text-align: left;
+    border-bottom: 1px solid black;
+}
+
+.topicsContent {
+    padding-bottom: 2vh;
+}
+
+.line {
+    border: 1px solid black;
+    padding: 0;
+    margin: 0;
+}
+
+#titleBlock {
+    border-bottom: 1px solid black;
+    margin-left: 3vw;
+    margin-right: 3vw;
+    text-align: center;
+}
+
+#title {
+    font-size: 8rem;
+    margin: 0px;
+}
+
+#subtitle {
+    margin: 0px;
+    margin-bottom: 0.5em;
+    font-size: 2rem;
+}
+
+#subtitleInfo {
+    display: flex;
+    justify-content: space-between;
+    margin: 0px;
+    margin-left: 3vw;
+    margin-right: 3vw;
+    border-bottom: 2px solid black;
+}
+
+.center {
+    grid-area: mainContent;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+}
+
+#leftSidebar {
+    grid-area: left;
+}
+
+#rightSidebar {
+    grid-area: right;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-areas: "left mainContent right";
+    margin-left: 3vw;
+    margin-right: 3vw;
+    margin-top: 2vh;
+}
+
+#mainArticle, #secondaryArticle, .sidebar {
+    margin: 1vw;
+}
+
+#mainArticle {
+    padding-bottom: 1vh;
+    border-bottom: 1px solid black;
+}
+
+#mainArticle > h2 {
+    margin: 0;
+    margin-bottom: 1vh;
+    font-size: 4.5rem;
+}
+
+#mainArticle > img {
+    display: block;
+    margin: auto;
+    width: 100%;
+}
+
+#mainArticle > h5 {
+    margin-top: 2vh;
+    padding-left: 10px;
+    border-left: 5px solid darkred;
+    font-size: 1rem;
+}
+
+#mainArticle > h3 {
+    margin: 0;
+    margin-bottom: 1vh;
+    font-size: 2.5rem;
+}
+
+.mainText {
+    columns: 3;
+    column-gap: 1vw;
+}
+
+.mainText > h3 {
+    font-size: 1.5rem;
+}
+
+#secondaryArticle > h2 {
+    font-size: 3rem;
+    margin: 0;
+    margin-bottom: 1vh;
+}
+
+#rightSidebar {
+    margin-right: 0;
+}
+
+#leftSidebar {
+    margin-left: 0;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebarContentWithImage > img {
+    display: block;
+    margin: auto;
+    padding-top: 2vh;
+    width: 100%;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.listItem {
+    text-align: left;
+}
+
+.pageNumber {
+    text-align: right;
+}
+
+.pageNumber {
+    float: right;
+}
+
+.barcode {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 10%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 0.5fr 0.5fr 2fr;
+    align-items: center;
+    justify-items: center;
+}
+
+#barcodeLogo {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: 60%;
+}
+
+#barcodeImage {
+    margin-top: 2vh;
+    grid-column: 1 / span 2;
+    grid-row: 3;
+    width: 75%;
+}
+
+.barcode > h3 {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 2rem;
+}
+
+.barcode > h4 {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.barcode > h3, h4 {
+    margin: 0;
+    padding: 0;
+}
+
+footer {
+    position: relative;
+    margin: 3vh;
+}
+
+#city {
+    display: block;
+    width: 100%;
+}
+
+#footerQuote {
+    position: absolute;
+    text-align: right;
+    top: 0%;
+    right: 1%;
+}
+
+#footerBig {
+    font-size: 4cqw;
+    padding: 0px;
+    margin: 0px;
+}
+
+#footerSmall {
+    font-size: 2cqw;
+    padding: 0px;
+    margin: 0px;
+}
+
+#logo2 {
+    background-color: black;
+    position: absolute;
+    height: 10%;
+    bottom: 0;
+    left: 0;
+    padding: 0.5%;
+}
+
+#smallBoxedTitle {
+    background-color: black;
+    display: block;
+    position: absolute;
+    margin: 0;
+    bottom: 0;
+    left: 3.9%;
+    font-size: 2cqw;
+    padding: calc(1cqw - 0.1%);
+}
+
+.red {
+    color: darkred;
+}
+
+.boxedTitle {
+    background-color: black;
+    color: white;
+    padding: 2%;
+}

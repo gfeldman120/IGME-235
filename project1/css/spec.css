@@ -72,7 +72,7 @@ div.topicContent > p {
 }
 
 #subtitle {
-    margin: 0px;
+    margin: 0;
     margin-bottom: 0.5em;
     font-size: 2rem;
 }
@@ -80,7 +80,7 @@ div.topicContent > p {
 #subtitleInfo {
     display: flex;
     justify-content: space-between;
-    margin: 0px;
+    margin: 0;
     margin-left: 3vw;
     margin-right: 3vw;
     border-bottom: 2px solid black;
@@ -90,14 +90,19 @@ div.topicContent > p {
     grid-area: mainContent;
     border-right: 1px solid black;
     border-left: 1px solid black;
+    margin-top: 0;
 }
 
 #leftSidebar {
     grid-area: left;
+    margin-left: 0;
+    margin-top: 0;
 }
 
 #rightSidebar {
     grid-area: right;
+    margin-right: 0;
+    margin-top: 0;
 }
 
 main {
@@ -111,6 +116,7 @@ main {
 
 #mainArticle, #secondaryArticle, .sidebar {
     margin: 1vw;
+    margin-top: 0;
 }
 
 #mainArticle {
@@ -158,14 +164,6 @@ main {
     margin-bottom: 1vh;
 }
 
-#rightSidebar {
-    margin-right: 0;
-}
-
-#leftSidebar {
-    margin-left: 0;
-}
-
 .sidebar {
     display: flex;
     flex-direction: column;
@@ -189,9 +187,6 @@ ul {
 
 .pageNumber {
     text-align: right;
-}
-
-.pageNumber {
     float: right;
 }
 
@@ -284,12 +279,36 @@ footer {
     padding: calc(1cqw - 0.1%);
 }
 
-.red {
-    color: darkred;
-}
-
 .boxedTitle {
     background-color: black;
     color: white;
     padding: 2%;
+}
+
+a:link {
+    color: red;
+}
+
+a:visited{
+    color: darkred;
+}
+
+a:focus {
+    color: brown;
+}
+
+a:hover {
+    background-color: lightgray;
+}
+
+a:active {
+    background-color: grey;
+}
+
+a {
+    text-decoration: none;
+}
+
+a.listLink:link, a.listLink:visited {
+    color: black;
 }

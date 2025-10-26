@@ -1,0 +1,434 @@
+* {
+    text-overflow: ellipsis;
+    font-family: Arial, sans-serif;
+}
+
+p {
+    font-size: 1.25rem;
+}
+
+.textTitle {
+    font-size: 1.75rem;
+}
+
+.smallTextTitle {
+    font-size: 1.25rem;
+}
+
+.bigTextTitle {
+    font-size: 3rem;
+}
+
+.textTitle, .smallTextTitle, .bigTextTitle {
+    margin: 0;
+    margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
+}
+
+div {
+    margin: 3px;
+}
+
+header {
+    margin-top: 3vh;
+}
+
+#footerQuote, #smallBoxedTitle {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+}
+
+.topics {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    padding-bottom: 1.5vh;
+    margin-left: 3vw;
+    margin-right: 3vw;
+    justify-content: space-evenly;
+    text-align: left;
+    border-bottom: 1px solid black;
+}
+
+div.topicContent > h2 {
+    font-size: 2.5rem;
+}
+
+div.topicContent > p {
+    font-size: 1.75rem;
+}
+
+.line {
+    border: 1px solid black;
+    padding: 0;
+    margin: 0;
+}
+
+#titleBlock {
+    border-bottom: 1px solid black;
+    margin-left: 3vw;
+    margin-right: 3vw;
+    text-align: center;
+}
+
+#title {
+    font-size: 8rem;
+    margin: 0px;
+}
+
+#subtitle {
+    margin: 0;
+    margin-bottom: 0.5em;
+    font-size: 2rem;
+}
+
+#subtitleInfo {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    margin-left: 3vw;
+    margin-right: 3vw;
+    border-bottom: 2px solid black;
+}
+
+@media (width <= 1100px)
+{
+    .topics {
+        display: none;
+    }
+
+    #title {
+        font-size: 4rem;
+    }
+
+    .qrcode {
+        grid-row: 1;
+        margin-bottom: 5vh;
+    }
+
+    .center {
+        grid-row: 2;
+        border: none;
+    }
+
+    #leftSidebar {
+        grid-row: 4;
+    }
+
+    #rightSidebar {
+        grid-row: 3;
+    }
+
+    main {
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
+        margin:0;
+        padding:0;
+    }
+}
+
+@media screen and (width > 1100px)
+{
+    .center {
+        grid-area: mainContent;
+        border-right: 1px solid black;
+        border-left: 1px solid black;
+        margin-top: 0;
+    }
+
+    .qrcode {
+        grid-area: qr;
+    }
+
+    #leftSidebar {
+        grid-area: left;
+        margin-left: 0;
+        margin-top: 0;
+    }
+
+    #rightSidebar {
+        grid-area: right;
+        margin-right: 0;
+        margin-top: 0;
+    }
+
+    main {
+        display: grid;
+        grid-template-columns: 1fr 4fr 1fr;
+        grid-template-areas:
+            "left mainContent qr"
+            "left mainContent right";
+        margin-left: 3vw;
+        margin-right: 3vw;
+        margin-top: 2vh;
+    }
+}
+
+main {
+    margin-left: 3vw;
+    margin-right: 3vw;
+    margin-top: 2vh;
+}
+
+#mainArticle, #secondaryArticle, .sidebar {
+    margin: 1vw;
+    margin-top: 0;
+}
+
+#mainArticle {
+    padding-bottom: 1vh;
+    border-bottom: 1px solid black;
+}
+
+#mainArticle > h2 {
+    margin: 0;
+    margin-bottom: 1vh;
+    font-size: 4.5rem;
+}
+
+#mainArticle > img {
+    display: block;
+    margin: auto;
+    width: 100%;
+}
+
+#mainArticle > h5 {
+    margin-top: 2vh;
+    padding-left: 10px;
+    border-left: 5px solid darkred;
+    font-size: 1rem;
+}
+
+#mainArticle > h3 {
+    margin: 0;
+    margin-bottom: 1vh;
+    font-size: 2.5rem;
+}
+
+.mainText {
+    column-gap: 1vw;
+}
+
+@media (width <= 1100px) {
+    #mainArticle > h2, #secondaryArticle > h2 {
+        font-size: 2rem;
+    }
+
+    #mainArticle > h3 {
+        font-size: 1.85rem;
+    }
+
+    .mainText > h3 {
+        font-size: 1.25rem;
+    }
+
+    .mainText {
+        columns: 2;
+    }
+}
+
+@media (width > 1100px) {
+    .mainText {
+        columns: 3;
+    }
+
+    #contentsList {
+        display: none;
+    }
+}
+
+@media (width <= 700px) {
+    .mainText {
+        columns: 1;
+    }
+
+    #contentsList {
+        border-bottom: 1px solid black;
+        padding-bottom: 1vh;
+        margin-bottom: 3vh;
+    }
+}
+
+.mainText > h3 {
+    font-size: 1.5rem;
+}
+
+#secondaryArticle > h2 {
+    font-size: 3rem;
+    margin: 0;
+    margin-bottom: 1vh;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebarContentWithImage > img {
+    display: block;
+    margin: auto;
+    padding-top: 2vh;
+    width: 100%;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.listItem {
+    text-align: left;
+}
+
+.pageNumber {
+    text-align: right;
+    float: right;
+}
+
+.qrcode {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 10%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 0.5fr 0.5fr 2fr;
+    align-items: center;
+    justify-items: center;
+}
+
+#qrcodeLogo {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: 60%;
+}
+
+#qrcodeImage {
+    margin-top: 2vh;
+    grid-column: 1 / span 2;
+    grid-row: 3;
+    width: 75%;
+}
+
+.qrcode > h3 {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 2rem;
+}
+
+.qrcode > h4 {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.qrcode > h3, h4 {
+    margin: 0;
+    padding: 0;
+}
+
+footer {
+    position: relative;
+    margin: 3vh;
+}
+
+#footerImg {
+    display: block;
+    width: 100%;
+}
+
+#footerQuote {
+    position: absolute;
+    text-align: right;
+    bottom: 0%;
+    right: 0%;
+}
+
+#footerBig {
+    font-size: 4cqw;
+    padding: 0px;
+    margin: 0px;
+    background-color: rgb(0, 0, 0, 0.5);
+}
+
+#footerSmall {
+    font-size: 2cqw;
+    padding: 0px;
+    margin: 0px;
+    background-color: rgb(0, 0, 0, 0.5);
+}
+
+#logo2 {
+    background-color: black;
+    position: absolute;
+    height: 10.8%;
+    bottom: 0;
+    left: 0;
+    padding: 0.5%;
+}
+
+#smallBoxedTitle {
+    background-color: black;
+    display: block;
+    position: absolute;
+    margin: 0;
+    bottom: 0;
+    left: 3.9%;
+    font-size: 2cqw;
+    padding: calc(1cqw - 0.1%);
+}
+
+.boxedTitle {
+    background-color: black;
+    color: white;
+    padding: 2%;
+}
+
+a:link {
+    color: red;
+}
+
+a:visited{
+    color: darkred;
+}
+
+a:focus {
+    color: brown;
+}
+
+a:hover {
+    background-color: lightgray;
+}
+
+a:active {
+    background-color: grey;
+}
+
+a {
+    text-decoration: none;
+}
+
+a.listLink:link, a.listLink:visited {
+    color: black;
+}
+
+@media (width <= 1100px) {
+    .listItem {
+        font-size: 1.75rem;
+    }
+
+    #qrcodeLogo {
+        width: 50%;
+    }
+
+    #qrcodeImage {
+        width: 50%;
+    }
+
+    img {
+        max-width: 80%;
+    }
+
+    #footerImg {
+        max-width: 100%;
+    }
+}

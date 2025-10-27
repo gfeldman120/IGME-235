@@ -40,11 +40,13 @@
         </div>
     </header>
     <main>
-        <div class="qrcode">
-            <img src="src/headsetDark.png" alt="Logo of VR headset." id="qrcodeLogo">
-            <h3><a href="https://gfeldman120.itch.io/v-armed">Click to try!</a></h3>
-            <h4>Or scan QRCode:</h4>
-            <img src="src/qrcode.png" alt="A QR code to the itch.io page." id="qrcodeImage">
+        <div id="qrcodeContainer">
+            <div id="qrcode">
+                <img src="src/headsetDark.png" alt="Logo of VR headset." id="qrcodeLogo">
+                <h3><a href="https://gfeldman120.itch.io/v-armed">Click to try!</a></h3>
+                <h4>Or scan QRCode:</h4>
+                <img src="src/qrcode.png" alt="A QR code to the itch.io page." id="qrcodeImage">
+            </div>
         </div>
         <div class="center">
             <div id="contentsList">
@@ -91,6 +93,7 @@
             </div>
         </div>
         <div id="rightSidebar" class="sidebar">
+            <span class="line"></span>
             <div class="sidebarContentWithImage">
                 <img src="src/projectile.png" alt="The projectile data menu." id="projectiles">
                 <h2 class="bigTextTitle">Projectiles and Arms</h2>

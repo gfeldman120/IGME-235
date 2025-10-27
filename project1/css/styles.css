@@ -101,9 +101,8 @@ div.topicContent > p {
         font-size: 4rem;
     }
 
-    .qrcode {
+    #qrcodeContainer {
         grid-row: 1;
-        margin-bottom: 5vh;
     }
 
     .center {
@@ -128,7 +127,7 @@ div.topicContent > p {
     }
 }
 
-@media screen and (width > 1100px)
+@media (width > 1100px)
 {
     .center {
         grid-area: mainContent;
@@ -137,7 +136,7 @@ div.topicContent > p {
         margin-top: 0;
     }
 
-    .qrcode {
+    #qrcodeContainer {
         grid-area: qr;
     }
 
@@ -171,9 +170,15 @@ main {
     margin-top: 2vh;
 }
 
-#mainArticle, #secondaryArticle, .sidebar {
+#mainArticle, #secondaryArticle, .sidebar, #qrcodeContainer {
     margin: 1vw;
     margin-top: 0;
+}
+
+#qrcodeContainer {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2vw;
 }
 
 #mainArticle {
@@ -286,13 +291,12 @@ ul {
     float: right;
 }
 
-.qrcode {
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-top: 10%;
+#qrcode {
+    margin-bottom: 1vw;
+    padding-bottom: 2vh;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 0.5fr 0.5fr 2fr;
+    grid-template-rows: 0.5fr 0.5fr 0.5fr;
     align-items: center;
     justify-items: center;
 }
@@ -300,28 +304,28 @@ ul {
 #qrcodeLogo {
     grid-column: 1;
     grid-row: 1 / span 2;
-    width: 60%;
+    width: 90%;
 }
 
 #qrcodeImage {
     margin-top: 2vh;
     grid-column: 1 / span 2;
     grid-row: 3;
-    width: 75%;
+    width: 100%;
 }
 
-.qrcode > h3 {
+#qrcode > h3 {
     grid-column: 2;
     grid-row: 1;
     font-size: 2rem;
 }
 
-.qrcode > h4 {
+#qrcode > h4 {
     grid-column: 2;
     grid-row: 2;
 }
 
-.qrcode > h3, h4 {
+#qrcode > h3, h4 {
     margin: 0;
     padding: 0;
 }
@@ -409,6 +413,13 @@ a {
 
 a.listLink:link, a.listLink:visited {
     color: black;
+}
+
+@media (width > 1100px) {
+    #secondaryArticle {
+        padding-bottom: 2vh;
+        border-bottom: 2px solid black;
+    }
 }
 
 @media (width <= 1100px) {

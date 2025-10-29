@@ -136,10 +136,6 @@ div.topicContent > p {
         margin-top: 0;
     }
 
-    #qrcodeContainer {
-        grid-area: qr;
-    }
-
     #leftSidebar {
         grid-area: left;
         margin-left: 0;
@@ -156,7 +152,6 @@ div.topicContent > p {
         display: grid;
         grid-template-columns: 1fr 4fr 1fr;
         grid-template-areas:
-            "left mainContent qr"
             "left mainContent right";
         margin-left: 3vw;
         margin-right: 3vw;
@@ -170,18 +165,18 @@ main {
     margin-top: 2vh;
 }
 
-#mainArticle, #secondaryArticle, .sidebar, #qrcodeContainer {
+#mainArticle, #secondaryArticle, .sidebar, #qrcodeContainer, #misc {
     margin: 1vw;
     margin-top: 0;
 }
 
 #qrcodeContainer {
-    margin-left: 2vw;
+    border-bottom: 2px solid black;
 }
 
 #mainArticle {
     padding-bottom: 1vh;
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid black;
 }
 
 #mainArticle > h2 {
@@ -245,6 +240,10 @@ main {
     #contentsList {
         display: none;
     }
+
+    #misc {
+        border-bottom: 2px solid black;
+    }
 }
 
 @media (width <= 700px) {
@@ -296,6 +295,8 @@ ul {
 }
 
 #qrcode {
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 1vw;
     padding-bottom: 2vh;
     display: grid;
@@ -303,6 +304,13 @@ ul {
     grid-template-rows: auto;
     align-items: center;
     justify-items: center;
+    width: 65%;
+}
+
+@media (width > 1300px) {
+    #qrcode {
+        width: 25%;
+    }
 }
 
 #qrcodeLogo {
@@ -366,7 +374,7 @@ footer {
 #logo2 {
     background-color: black;
     position: absolute;
-    height: 10.8%;
+    height: 3.05cqw;
     bottom: 0;
     left: 0;
     padding: 0.5%;
@@ -378,7 +386,7 @@ footer {
     position: absolute;
     margin: 0;
     bottom: 0;
-    left: 3.9%;
+    left: 4%;
     font-size: 2cqw;
     padding: calc(1cqw - 0.1%);
 }
@@ -387,10 +395,6 @@ footer {
     background-color: black;
     color: white;
     padding: 2%;
-}
-
-a {
-    text-decoration: underline;
 }
 
 a:link {
@@ -414,18 +418,16 @@ a:active {
 }
 
 a {
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 a.listLink:link, a.listLink:visited {
     color: black;
 }
 
-@media (width > 1300px) {
-    #secondaryArticle {
-        padding-bottom: 2vh;
-        border-bottom: 2px solid black;
-    }
+#secondaryArticle {
+    padding-bottom: 2vh;
+    border-bottom: 2px solid black;
 }
 
 @media (width <= 1300px) {

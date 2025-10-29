@@ -363,6 +363,7 @@ footer {
     font-size: 4cqw;
     padding: 0px;
     margin: 0px;
+    color: black;
 }
 
 #footerSmall {
@@ -374,7 +375,7 @@ footer {
 #logo2 {
     background-color: black;
     position: absolute;
-    height: 3.05cqw;
+    height: 3.1cqw;
     bottom: 0;
     left: 0;
     padding: 0.5%;

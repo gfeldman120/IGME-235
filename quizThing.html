@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>One</p>
+    <p>Two</p>
+    <p>Three</p>
+    <p>Four</p>
+    <p>Five</p>
+
+    <script>
+        const ps = document.querySelectorAll('p');
+        const colors = ["red", "green", "blue", "yellow"];
+        for (let i = 0; i < ps.length; i++)
+        {
+            ps[i].style.color = colors[i % colors.length];
+        }
+    </script>
+</body>
+</html>

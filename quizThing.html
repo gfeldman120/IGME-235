@@ -6,19 +6,45 @@
     <title>Document</title>
 </head>
 <body>
-    <p>One</p>
-    <p>Two</p>
-    <p>Three</p>
-    <p>Four</p>
-    <p>Five</p>
+    <ul>
+        <li>Pikachu</li>
+        <li>Charmander</li>
+        <li>Treeko</li>
+        <li>Kyogre</li>
+        <li>Machamp</li>
+    </ul>
 
     <script>
-        const ps = document.querySelectorAll('p');
-        const colors = ["red", "green", "blue", "yellow"];
-        for (let i = 0; i < ps.length; i++)
-        {
-            ps[i].style.color = colors[i % colors.length];
+        // Colors
+        const rainbow = ["red", "orange", "yellow", "green", "purple", "blue"];
+
+        // Change the color of an element
+        const setColor = (element, color) => {
+            element.style.color = color;
         }
+
+        // Make the mons colorful
+        const colorMons = () => {
+            let mons = document.querySelectorAll("li");
+            for (let i = 0; i < mons.length; i++) {
+                setTimeout(() => setColor(mons[i], rainbow[i % rainbow.length]), 50 * i);
+            }
+        }
+
+        // Make a bunch more empty mons
+        const fillMons = (totalLength) => {
+            let mons = document.querySelectorAll("li");
+            let list = document.querySelector("ul");
+            let html = list.innerHTML;
+            for (let i = 0; i < totalLength - mons.length; i++) {
+                html += `<li>EMPTY (${i + mons.length + 1})</li>`;
+            }
+            list.innerHTML = html;
+        }
+
+        // Do some stuff
+        fillMons(100);
+        colorMons();
     </script>
 </body>
 </html>

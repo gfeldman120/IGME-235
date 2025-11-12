@@ -45,6 +45,27 @@
         // Do some stuff
         fillMons(100);
         colorMons();
+
+        const getJoke = () => {
+            return fetch('http://official-joke-api.appspot.com/random_joke')
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    // Whatever you need to do with the data goes here
+                    console.log(data);
+                    return data;
+                })
+        }
+
+        // Pressing a thing does stuff
+        someButton.addEventListener('click', (evt) => {
+            console.log("Do a thing!");
+            let theJoke = getJoke();
+            // Saving data to persist after reloading the page
+            let jokeKey = 'current-joke';
+            localStorage.setItem(jokeKey, theJoke);
+        });
     </script>
 </body>
 </html>

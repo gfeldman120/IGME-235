@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        <li>Pikachu</li>
+        <li>Charmander</li>
+        <li>Treeko</li>
+        <li>Kyogre</li>
+        <li>Machamp</li>
+    </ul>
+
+    <script>
+        // Colors
+        const rainbow = ["red", "orange", "yellow", "green", "purple", "blue"];
+
+        // Change the color of an element
+        const setColor = (element, color) => {
+            element.style.color = color;
+        }
+
+        // Make the mons colorful
+        const colorMons = () => {
+            let mons = document.querySelectorAll("li");
+            for (let i = 0; i < mons.length; i++) {
+                setTimeout(() => setColor(mons[i], rainbow[i % rainbow.length]), 50 * i);
+            }
+        }
+
+        // Make a bunch more empty mons
+        const fillMons = (totalLength) => {
+            let mons = document.querySelectorAll("li");
+            let list = document.querySelector("ul");
+            let html = list.innerHTML;
+            for (let i = 0; i < totalLength - mons.length; i++) {
+                html += `<li>EMPTY (${i + mons.length + 1})</li>`;
+            }
+            list.innerHTML = html;
+        }
+
+        // Do some stuff
+        fillMons(100);
+        colorMons();
+
+        const getJoke = () => {
+            return fetch('http://official-joke-api.appspot.com/random_joke')
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    // Whatever you need to do with the data goes here
+                    console.log(data);
+                    return data;
+                })
+        }
+
+        // Pressing a thing does stuff
+        someButton.addEventListener('click', (evt) => {
+            console.log("Do a thing!");
+            let theJoke = getJoke();
+            // Saving data to persist after reloading the page
+            let jokeKey = 'current-joke';
+            localStorage.setItem(jokeKey, theJoke);
+        });
+    </script>
+</body>
+</html>

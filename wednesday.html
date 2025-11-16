@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+        const key = "number";
+
+        let r = Math.ceil(Math.random() * 100);
+        console.log(r);
+
+        let oldNumber = parseInt(localStorage.getItem(key));
+
+        // if (isNaN(oldNumber) || r > oldNumber)
+
+        if (!isNaN(oldNumber)) {
+            if (r > oldNumber) {
+                localStorage.setItem(key, r);
+                console.log("New highest number");
+            }
+            else {
+                console.log("Old number is higher");
+            }
+        }
+        else {
+            localStorage.setItem(key, r);
+            console.log("Old number not found, saving current number");
+        }
+
+        console.log(localStorage.getItem(key));
+
+        // localStorage.clear();
+
+        // Objects
+
+        let obj = {
+            name: "Somebody",
+            epicLevel: 5
+        }
+
+        localStorage.setItem("obj", JSON.stringify(obj));
+
+        let savedObj = JSON.parse(localStorage.getItem("obj"));
+
+        console.log(savedObj.name);
+        console.log(savedObj.epicLevel);
+    </script>
+</body>
+</html>

@@ -154,6 +154,16 @@ li {
     background-color: rgb(255, 255, 255);
 }
 
+#content > h1 {
+    margin: auto;
+    text-align: center;
+}
+
+#loadingImage {
+    margin: auto;
+    width: 50%;
+}
+
 .line {
     width: 100%;
     height: 0px;
@@ -173,9 +183,22 @@ li {
     font-style: italic;
 }
 
-#dogImage {
-    height: 95%;
-    margin: 20px;
+#dogGrid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: auto;
+    padding: 20px;
+    gap: 20px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+#dogGrid > img {
+    width: max-content;
+    margin: auto;
     border: 2px solid black;
 }
 
@@ -215,7 +238,14 @@ li {
         margin-bottom: 2vh;
     }
 
-    #dogImage {
+    #dogGrid {
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: auto;
+        overflow: visible;
+    }
+
+    #dogGrid > img {
         width: 95%;
     }
 }

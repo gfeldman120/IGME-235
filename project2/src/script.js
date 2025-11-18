@@ -1,8 +1,25 @@
+// Variables
+let lastDogHolder = document.querySelector("#lastDogHolder");
+let listParent = document.querySelector("ul");
+let checkboxes = [];
+let parentBreedindices = [];
+let subBreedCounts = [];
+let searchButton = document.querySelector("#search");
+let numberOfDogs = document.querySelector("#numberOfDogsInput");
+let content = document.querySelector("#content");
+
+numberOfDogs.min = 1;
+numberOfDogs.max = 50;
+numberOfDogs.step = 1;
+numberOfDogs.placeholder = "Number 1-50";
+numberOfDogs.value = "";
+
 const breedsURL = "https://dog.ceo/api/breeds/list/all";
-const randomDogURL = `https://dog.ceo/api/breed/${"breed"}/images/random`;
-const randomDogSubBreedURL = `https://dog.ceo/api/breed/${"breed"}/${"subBreed"}/images/random`;
+const randomDogURL = "https://dog.ceo/api/breed/images/random";
+let searching = false;
 
 window.onload = () => {
+    LoadCornerDog();
     fetch(breedsURL)
         .then(response => {
             return response.json();
@@ -12,22 +29,15 @@ window.onload = () => {
         })
         .catch(error => {
             console.error("Breeds API error!", error);
+            listParent.innerHTML = `
+                <li>Something went wrong, please try again later!</li>
+                <li>(${error.message})</li>`;
         })
 }
 
-// Variables
-let checkboxes = [];
-let parentBreedindices = [];
-let subBreedCounts = [];
-let searchButton = document.querySelector("#search");
-let numberOfDogs = document.querySelector("#numberOfDogsInput");
-let lastValidNumberOfDogs = 1;
-
-numberOfDogs.min = 1;
-numberOfDogs.max = 50;
-numberOfDogs.step = 1;
-numberOfDogs.placeholder = "Number 1-50";
-numberOfDogs.value = "";
+const UpperFirstLowerLast = (word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1)
+}
 
 const SelectAll = (value) => {
     for (let i = 0; i < checkboxes.length; i++) {
@@ -54,7 +64,6 @@ const ChildCheckboxHit = (parentIndex, count) => {
 
 const QuantityUpdated = () => {
     let value = numberOfDogs.value;
-    lastValidNumberOfDogs = value;
     if (value > 1 && value <= 50 && !isNaN(value)) {
         search.innerHTML = `Find ${value} dogs!`;
     }
@@ -64,80 +73,117 @@ const QuantityUpdated = () => {
     }
 }
 
-// NEED TO DO
-// Fill out LoadingDogs()
-// Fill out LoadDogs()
-// Change HTML page to blank text
-
-const LoadingDogs = () => {
-
-}
-
-const LoadDogs = (data) => {
+const LoadDogs = (data, breed, subBreed) => {
     console.log(data);
+    let newHTML = `
+        <h2 id="breedName">${breed}</h2>
+        <div class="line"></div>`;
+    if (subBreed != "") {
+        newHTML += `
+        <h3 id="subBreedName">${subBreed}</h3>
+        <div class="line"></div>`;
+    }
+    newHTML += `<div id="dogGrid">`;
+    let dogs = data.message;
+    let keys = dogs.keys();
+    localStorage.setItem("cornerDog", dogs[keys[Math.floor(Math.random * keys.length)]]);
+    for (let i = 0; i < keys.length; i++) {
+        newHTML += `<img src="${dogs[keys[i]]}" alt="A dog"></img>`;
+    }
+    newHTML += `</div>`;
+    content.innerHTML = newHTML;
+    searching = false;
 }
 
-const Search = () => {
-    let url = "https://dog.ceo/api/breed/";
-    let selectedBreeds = [];
-    let lastParent = 0;
-    for (let i = 0; i < checkboxes.length; i++) {
-        if(checkboxes[i].checked) {
-            for (let j = 0; j < parentBreedindices.length; j++) {
-                if (i == parentBreedindices[j]) {
-                    // Parent
-                    lastParent = selectedBreeds.length;
-                    selectedBreeds.push({
-                        name: checkboxes[i].name,
-                        subBreeds: []
-                    });
-                    break;
-                }
-                else if (i > parentBreedindices[j] && i <= parentBreedindices[j] + subBreedCounts[j]) {
-                    // Child
-                    selectedBreeds[lastParent].subBreeds.push(checkboxes[i].name);
-                    break;
-                }
-                else if (i < parentBreedindices[j])
-                {
-                    // Unique
-                    selectedBreeds.push({
-                        name: checkboxes[i].name
-                    });
-                    break;
-                }
-            }
-        }
-    }
-    if (selectedBreeds.length > 0) {
-        let randomIndex = Math.floor(Math.random() * selectedBreeds.length);
-        let breed = selectedBreeds[randomIndex];
-        url += breed.name;
-        if ("subBreeds" in breed) {
-            url += `/${breed.subBreeds[Math.floor(Math.random() * breed.subBreeds.length)]}`;
-        }
-        let quantity = 1;
-        if (isNaN(numberOfDogs.value) && numberOfDogs.value >= 1 && numberOfDogs.value <= 50) {
-            quantity = numberOfDogs.value;
-        }
-        url += `/images/random/${quantity}`;
-        LoadingDogs();
-        fetch(url)
+const LoadCornerDog = () => {
+    let cornerDog = localStorage.getItem("cornerDog");
+    if (cornerDog == null) {
+        fetch(randomDogURL)
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                LoadDogs(data);
+                cornerDog = data.message[data.message.keys()[0]];
+                lastDogHolder.innerHTML = `<img src="${cornerDog}" alt="The last dog viewed" id="savedDog">`
             })
             .catch(error => {
-                console.error("Search API error!", error);
+                console.error("Random dog API error!", error);
             })
     }
     else {
-        console.log("Nothing is selected - Random dog!");
-        SelectAll(true);
-        Search();
-        SelectAll(false);
+        lastDogHolder.innerHTML = `<img src="${cornerDog}" alt="The last dog viewed" id="savedDog">`;
+    }
+}
+
+const Search = () => {
+    if (!searching) {
+        searching = true;
+        let url = "https://dog.ceo/api/breed/";
+        let selectedBreeds = [];
+        let lastParent = 0;
+        for (let i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                for (let j = 0; j < parentBreedindices.length; j++) {
+                    if (i == parentBreedindices[j]) {
+                        // Parent
+                        lastParent = selectedBreeds.length;
+                        selectedBreeds.push({
+                            name: checkboxes[i].name,
+                            subBreeds: []
+                        });
+                        break;
+                    }
+                    else if (i > parentBreedindices[j] && i <= parentBreedindices[j] + subBreedCounts[j]) {
+                        // Child
+                        selectedBreeds[lastParent].subBreeds.push(checkboxes[i].name);
+                        break;
+                    }
+                    else if (i < parentBreedindices[j]) {
+                        // Unique
+                        selectedBreeds.push({
+                            name: checkboxes[i].name
+                        });
+                        break;
+                    }
+                }
+            }
+        }
+        if (selectedBreeds.length > 0) {
+            let randomIndex = Math.floor(Math.random() * selectedBreeds.length);
+            let breed = selectedBreeds[randomIndex];
+            url += breed.name;
+            let breedName = UpperFirstLowerLast(breed.name);
+            let subBreedName = "";
+            if ("subBreeds" in breed && breed.subBreeds.length > 0) {
+                let subBreed = breed.subBreeds[Math.floor(Math.random() * breed.subBreeds.length)];
+                url += `/${subBreed}`;
+                subBreedName = UpperFirstLowerLast(subBreed);
+            }
+            let quantity = 1;
+            if (!isNaN(numberOfDogs.value) && numberOfDogs.value >= 1 && numberOfDogs.value <= 50) {
+                quantity = numberOfDogs.value;
+            }
+            url += `/images/random/${quantity}`;
+            content.innerHTML = `<img src="src/loading.png" alt="Logo of a dog face, with loading text below it" id="loadingImage"></img>`;
+            fetch(url)
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    LoadDogs(data, breedName, subBreedName);
+                })
+                .catch(error => {
+                    console.error("Search API error!", error);
+                    content.innerHTML = `<h1>Something went wrong, please try again later!<br><br>(${error.message})</h1>`;
+                    searching = false;
+                })
+        }
+        else {
+            console.log("Nothing is selected - Random dog!");
+            SelectAll(true);
+            Search();
+            SelectAll(false);
+        }
     }
 }
 
@@ -150,7 +196,7 @@ const LoadFilters = (data) => {
         newHTML += `
             <li>
                 <input type="checkbox" id="breed${i}" name="${breedName}" value="${breedName}">
-                <label for="breed${i}">${breedName.charAt(0).toUpperCase() + breedName.slice(1)}</label>
+                <label for="breed${i}">${UpperFirstLowerLast(breedName)}</label>
             </li>`;
         let subBreeds = data.message[breeds[i]];
         if (subBreeds.length > 0) {
@@ -163,7 +209,7 @@ const LoadFilters = (data) => {
                 newHTML += `
                     <li>
                         <input type="checkbox" id="subBreed${j}:${breedName}" name="${subBreedName}" value="${subBreedName}">
-                        <label for="subBreed${j}:${breedName}" class="subBreed">${subBreedName.charAt(0).toUpperCase() + subBreedName.slice(1)}</label>
+                        <label for="subBreed${j}:${breedName}" class="subBreed">${UpperFirstLowerLast(subBreedName)}</label>
                     </li>`;
                 currentIndex++;
             }
@@ -173,7 +219,6 @@ const LoadFilters = (data) => {
             currentIndex++;
         }
     }
-    let listParent = document.querySelector("ul");
     listParent.innerHTML = newHTML;
     // Getting elements
     checkboxes = document.querySelectorAll("input");
@@ -187,5 +232,5 @@ const LoadFilters = (data) => {
         }
     }
     numberOfDogs.addEventListener("change", function () { QuantityUpdated() });
-    document.querySelector("#search").addEventListener("click", function() { Search() });
+    document.querySelector("#search").addEventListener("click", function () { Search() });
 }

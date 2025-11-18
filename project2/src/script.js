@@ -15,7 +15,7 @@ numberOfDogs.placeholder = "Number 1-50";
 numberOfDogs.value = "";
 
 const breedsURL = "https://dog.ceo/api/breeds/list/all";
-const randomDogURL = "https://dog.ceo/api/breed/images/random";
+const randomDogURL = "https://dog.ceo/api/breeds/image/random";
 let searching = false;
 
 window.onload = () => {
@@ -84,14 +84,14 @@ const LoadDogs = (data, breed, subBreed) => {
         <div class="line"></div>`;
     }
     newHTML += `<div id="dogGrid">`;
-    let dogs = data.message;
-    let keys = dogs.keys();
-    localStorage.setItem("cornerDog", dogs[keys[Math.floor(Math.random * keys.length)]]);
-    for (let i = 0; i < keys.length; i++) {
-        newHTML += `<img src="${dogs[keys[i]]}" alt="A dog"></img>`;
+    localStorage.setItem("cornerDog", data.message[Math.floor(Math.random() * data.message.length)]);
+    for (let i = 0; i < data.message.length; i++) {
+        newHTML += `<img src="${data.message[i]}" alt="A dog"></img>`;
     }
     newHTML += `</div>`;
     content.innerHTML = newHTML;
+    let dogGrid = document.querySelector("#dogGrid");
+    dogGrid.style.maxWidth = `calc(300px * ${data.message.length} + 50px)`;
     searching = false;
 }
 
@@ -103,7 +103,7 @@ const LoadCornerDog = () => {
                 return response.json();
             })
             .then(data => {
-                cornerDog = data.message[data.message.keys()[0]];
+                cornerDog = data.message;
                 lastDogHolder.innerHTML = `<img src="${cornerDog}" alt="The last dog viewed" id="savedDog">`
             })
             .catch(error => {
@@ -180,6 +180,7 @@ const Search = () => {
         }
         else {
             console.log("Nothing is selected - Random dog!");
+            searching = false;
             SelectAll(true);
             Search();
             SelectAll(false);

@@ -1,12 +1,13 @@
 // Element variables
 let lastDogHolder = document.querySelector("#lastDogHolder");
 let listParent = document.querySelector("ul");
-let checkboxes = [];
-let parentBreedindices = [];
-let subBreedCounts = [];
 let searchButton = document.querySelector("#search");
 let numberOfDogs = document.querySelector("#numberOfDogsInput");
 let content = document.querySelector("#content");
+let checkboxes = [];
+let parentBreedindices = [];
+let subBreedCounts = [];
+
 
 // Setting input restrictions
 numberOfDogs.min = 1;
@@ -22,7 +23,7 @@ let searching = false;
 
 // On load, set the corner dog and begin the process of loading the filters
 window.onload = () => {
-    LoadCornerDog();
+    loadCornerDog();
     fetch(breedsURL)
         .then(response => {
             return response.json();
@@ -73,11 +74,11 @@ const childCheckboxHit = (parentIndex, count) => {
 const quantityUpdated = () => {
     let value = numberOfDogs.value;
     if (value > 1 && value <= 50 && !isNaN(value)) {
-        search.innerHTML = `Find ${value} dogs!`;
+        searchButton.innerHTML = `Find ${value} dogs of a random breed!`;
     }
     else {
         numberOfDogs.value = 1;
-        search.innerHTML = "Find a dog!";
+        searchButton.innerHTML = "Find a dog of a random breed!";
     }
 }
 
@@ -105,10 +106,11 @@ const loadDogs = (data, breed, subBreed) => {
     let dogGrid = document.querySelector("#dogGrid");
     dogGrid.style.maxWidth = `calc(300px * ${data.message.length} + 50px)`;
     searching = false;
+    window.location.href = "#content";
 }
 
 // Load the dog in the corner of the screen via local storage or, if that doesn't exist, attempt to display a random dog image
-const LoadCornerDog = () => {
+const loadCornerDog = () => {
     let cornerDog = localStorage.getItem("cornerDog");
     if (cornerDog == null) {
         fetch(randomDogURL)
@@ -129,7 +131,7 @@ const LoadCornerDog = () => {
 }
 
 // Get a random breed/sub breed from selected checkboxes and search for those dogs
-const Search = () => {
+const search = () => {
     if (!searching) {
         searching = true;
         let url = "https://dog.ceo/api/breed/";
@@ -200,10 +202,9 @@ const Search = () => {
         }
         // If nothing is selected, try again with every breed selected
         else {
-            console.log("Nothing is selected - Random dog!");
             searching = false;
             selectAll(true);
-            Search();
+            search();
             selectAll(false);
         }
     }
@@ -256,6 +257,6 @@ const loadFilters = (data) => {
             checkboxes[parentBreedindices[i] + j + 1].addEventListener("change", function () { childCheckboxHit(parentBreedindices[i], subBreedCounts[i]) });
         }
     }
-    numberOfDogs.addEventListener("change", function () { quantityUpdated() });
-    document.querySelector("#search").addEventListener("click", function () { Search() });
+    numberOfDogs.addEventListener("blur", function () { quantityUpdated() });
+    searchButton.addEventListener("click", function () { search() });
 }

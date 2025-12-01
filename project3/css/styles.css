@@ -1,0 +1,15 @@
+#grid {
+    display: grid;
+    grid-template-rows: 0;
+    grid-template-columns: 0;
+    width: 90%;
+    height: 90%;
+    border: 1px solid black;
+}
+
+.gridObject {
+    grid-column: 0;
+    grid-row: 0;
+    width: 10px;
+    height: 10px;
+}

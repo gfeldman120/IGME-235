@@ -4,46 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="src/script.js"></script>
     <title>Find-A-Dog</title>
 </head>
 <body>
     <div id="sidebar">
         <div id="lastDogHolder">
-            <img src="src/placeholder.jpg" alt="The last dog viewed" id="savedDog">
-            <h1 id="titleText">FIND-A-DOG</h1>
+            <img src="src/placeholder.png" alt="The last dog viewed" id="savedDog">
         </div>
+        <h1 id="titleText">FIND-A-DOG</h1>
         <div id="filtersHolder">
             <h2>FILTERS</h2>
             <ul>
-                <li>
-                    <input type="checkbox" id="breed1" name="breedName" value="breedName">
-                    <label for="breed1">Breed name</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="breed2" name="breedName" value="breedName">
-                    <label for="breed2">Breed name</label>
-                    <ul><li>
-                        <input type="checkbox" id="subBreed1" name="subBreedName" value="subBreedName">
-                        <label for="subBreed1">Sub breed name</label>
-                    </li></ul>
-                </li>
-                <li>
-                    <input type="checkbox" id="breed3" name="breedName" value="breedName">
-                    <label for="breed3">Breed name</label>
-                </li>
+                <li>Loading filters...</li>
             </ul>
         </div>
         <div id="buttons">
             <button type="button" id="selectAll">Select all</button>
             <button type="button" id="unselectAll">Unselect all</button>
-            <button type="button" id="search">Find a dog!</button>
+            <button type="button" id="search">Find a dog of a random breed!</button>
+            <div id="numberOfDogs">
+                <p>Search quantity?</p>
+                <input type="number" id="numberOfDogsInput">
+            </div>
         </div>
     </div>
     <div id="content">
-        <h2 id="breedName">Breed</h2>
-        <h3 id="subBreedName">Sub Breed</h3>
-        <img src="src/placeholder.jpg" alt="The dog currently being viewed" id="dogImage">
+        <h1>Search for a dog or search for multiple!</h1>
     </div>
+    <footer></footer>
+    <script src="src/script.js"></script>
 </body>
 </html>

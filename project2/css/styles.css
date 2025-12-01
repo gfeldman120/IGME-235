@@ -1,20 +1,20 @@
-#savedDog, #sidebar, #content {
-    border: 2px solid black;
+* {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 #sidebar {
     grid-column: 1;
-}
-
-#content {
-    grid-column: 2;
+    border-right: 4px solid black;
+    background-color: rgb(235, 235, 235);
 }
 
 body {
+    overflow: hidden;
     margin: 0;
-    grid-template-columns: 400px auto;
-    grid-template-rows: calc(100vh - 4px);
+    grid-template-columns: 325px auto;
+    grid-template-rows: 100vh;
     display: grid;
+    background-color: rgb(235, 235, 255);
 }
 
 #savedDog {
@@ -22,9 +22,10 @@ body {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: calc(100% - 2px);
-    height: 35vh;
+    width: 100%;
+    height: 25vh;
     filter: brightness(50%);
+    border-bottom: 4px solid black;
 }
 
 #titleText {
@@ -34,8 +35,8 @@ body {
     margin: 0;
     top: 0;
     left: 0;
-    width: 400px;
-    height: 35vh;
+    width: 325px;
+    height: 25vh;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -46,14 +47,164 @@ body {
 #filtersHolder {
     display: flex;
     flex-direction: column;
+    height: calc(100vh - 25vh - 171px);
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #filtersHolder > h2 {
-    margin: 15px;
+    font-size: 2rem;
+    margin: 10px;
+}
+
+ul {
+    margin: 0px;
+    padding: 0px;
+    padding-left: 15px;
+}
+
+#filtersHolder > ul {
+    padding-bottom: 15px;
+}
+
+#buttons {
+    background-color: white;
+    border-top: 4px solid black;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 6fr 9fr 7fr;
+    display: grid;
+    height: 150px;
+    padding: 2%;
+    bottom: 0;
+}
+
+#selectAll {
+    grid-row: 1;
+    grid-column: 1;
+    background-color: rgb(235, 255, 235);
+}
+
+#unselectAll {
+    grid-row: 1;
+    grid-column: 2;
+    background-color: rgb(255, 235, 235);
+}
+
+#search {
+    grid-row: 2;
+    grid-column: 1 / span 2;
+    background-color: rgb(235, 255, 255);
+}
+
+#numberOfDogs {
+    grid-row: 3;
+    grid-column: 1 / span 2;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#numberOfDogs > p, #numberOfDogs > input {
+    padding: 0;
+    margin: auto;
+    font-size: 1.15rem;
+}
+
+#numberOfDogs > input {
+    width: 100%;
+    height: 100%;
+    font-size: 1.5rem;
+    border-radius: 5px;
+}
+
+button, #numberOfDogs {
+    width: calc(100% - 15px);
+    height: calc(100% - 15px);
+    margin: auto;
+}
+
+button {
+    font-size: 1.15rem;
+    border-radius: 5px;
+}
+
+#selectAll:active, #unselectAll:active, #search:active {
+    background-color: rgb(200, 200, 200);
 }
 
 li {
-    list-style: none;
+    list-style-type: none;
+    font-size: 1rem;
+}
+
+.subBreed {
+    font-style: italic;
+}
+
+#content {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 95%;
+    max-width: calc(100vw - 329px);
+    height: 95%;
+    margin: auto;
+    border: 4px solid black;
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+}
+
+#content > h1 {
+    margin: auto;
+    text-align: center;
+}
+
+#loadingImage {
+    margin: auto;
+    width: 25%;
+}
+
+.line {
+    width: 100%;
+    height: 0px;
+    border: 1px solid black;
+}
+
+#breedName {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 3rem;
+}
+
+#subBreedName {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 2.25rem;
+    font-style: italic;
+}
+
+#dogGrid {
+    width: 90%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-rows: auto;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 5%;
+    padding-right: 5%;
+    gap: 10px;
+    overflow-x: visible;
+    overflow-y: scroll;
+}
+
+#dogGrid > img {
+    max-width: 95%;
+    margin: auto;
+    border: 2px solid black;
+    border-radius: 10px;
 }
 
 @media screen and (width <=1000px) {
@@ -64,9 +215,11 @@ li {
     #content {
         grid-row: 2;
         grid-column: 1;
+        max-width: calc(95vw);
     }
 
     body {
+        overflow: scroll;
         grid-template-columns: 100vw;
         grid-template-rows: auto auto;
         display: grid;
@@ -79,5 +232,26 @@ li {
     #titleText {
         width: 100%;
         height: 40vh;
+    }
+
+    #buttons {
+        border-bottom: 4px solid black;
+        margin-bottom: 15px;
+    }
+
+    #content {
+        height: auto;
+        margin-bottom: 2vh;
+    }
+
+    #dogGrid {
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: auto;
+        overflow: visible;
+    }
+
+    #dogGrid > img {
+        width: 95%;
     }
 }

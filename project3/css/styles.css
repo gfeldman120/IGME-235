@@ -1,15 +1,32 @@
-#grid {
+body {
     display: grid;
-    grid-template-rows: 0;
-    grid-template-columns: 0;
-    width: 90%;
-    height: 90%;
+    margin: 0px;
+    height: 100vh;
+    overflow: hidden;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 5fr;
     border: 1px solid black;
 }
 
+#sidebar {
+    grid-column: 1;
+    border-right: 10px solid black;
+}
+
+#grid {
+    grid-column: 2;
+    margin: auto;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    width: 90vh;
+    height: 90vh;
+    padding: 0px;
+    display: grid;
+    border: 10px solid black;
+}
+
 .gridObject {
-    grid-column: 0;
-    grid-row: 0;
-    width: 10px;
-    height: 10px;
+    margin: 0;
+    width: 100%;
+    height: 100%;
 }

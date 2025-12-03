@@ -8,7 +8,7 @@ const width = 50;
 const height = 50;
 const baseTimer = 21;
 const scoreTimeIncrease = 7;
-const obstacleCount = (width * height) / 4;
+const obstacleCount = (width * height) / 10;
 
 const objects = [];
 const keysPressed = [];
@@ -48,26 +48,39 @@ class GameObject {
 
     // Modify inputs to allow for screen wrapping, then set position
     setPosition(x, y) {
-        if (x < 0) {
+        let position = this.getFuturePosition(x, y);
+        this.x = position.x;
+        this.y = position.y;
+    }
+
+    getFuturePosition(x, y) {
+        while (x < 0) {
             x += width;
         }
-        else if (x >= width) {
+        while (x >= width) {
             x -= width;
         }
-        if (y < 0) {
+        while (y < 0) {
             y += height;
         }
-        else if (y >= height) {
+        while (y >= height) {
             y -= height;
         }
-        this.x = x;
-        this.y = y;
+        let position = {
+            x: x,
+            y: y
+        };
+        return position;
     }
 
     static getEmpty(x, y) {
         return new GameObject("empty", x, y);
     }
 }
+
+let areSamePosition = (position1, position2) => {
+        return (position1.x == position2.x && position1.y == position2.y);
+    }
 
 const createGrid = (width, height) => {
     let grid = document.querySelector(`#grid`);
@@ -140,7 +153,7 @@ let updateScreen = () => {
     }
     let player = objects[0];
     // Object collision
-    if (player != undefined)
+    if (player != undefined && keysPressed.length > 0)
     {
         for (let i = 1; i < objects.length; i++)
         {
@@ -148,11 +161,39 @@ let updateScreen = () => {
             switch (object.name)
             {
                 case "obstacle":
-                    if (player.x + xMovement == object.x && player.y + yMovement == object.y)
-                    {
-                        xMovement = 0;
-                        yMovement = 0;
+                    let verticalPriority = keysPressed[0] == `w` || keysPressed[0] == `s`;
+
+                    // if (player.x + xMovement == object.x && player.y + yMovement == object.y)
+                    // {
+                    //     xMovement = 0;
+                    //     yMovement = 0;
+                    // }
+
+                    let futureHorizontal = player.getFuturePosition(player.x + xMovement, player.y);
+                    let futureVertical = player.getFuturePosition(player.x, player.y + yMovement);
+                    let futureBoth = player.getFuturePosition(player.x + xMovement, player.y + yMovement);
+                    let obstaclePosition = {
+                        x: object.x,
+                        y: object.y
+                    };
+
+                    let sameHorizontal = areSamePosition(futureHorizontal, obstaclePosition);
+                    let sameVertical = areSamePosition(futureVertical, obstaclePosition);
+                    let sameBoth = areSamePosition(futureBoth, obstaclePosition);
+
+                    let xChange = xMovement;
+                    let yChange = yMovement;
+                    if (xMovement != 0 || yMovement != 0) {
+                        if ((yMovement == 0 && xMovement != 0 && sameHorizontal) || (yMovement != 0 && xMovement != 0 && (sameBoth || (sameHorizontal && sameVertical && !sameBoth)))) {
+                            xChange = 0;
+                        }
+                        if ((yMovement != 0 && xMovement == 0 && sameVertical) || (yMovement != 0 && xMovement != 0 && (sameBoth || (sameHorizontal && sameVertical && !sameBoth)))) {
+                            yChange = 0;
+                        }
                     }
+                    xMovement = xChange;
+                    yMovement = yChange;
+
                     break;
                 case "goal":
                     if (player.x + xMovement == object.x && player.y + yMovement == object.y)

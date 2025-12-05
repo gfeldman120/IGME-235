@@ -22,16 +22,14 @@ let score;
 let highScoreItem = document.querySelector("#highScore");
 let highScore;
 
-window.onload = function() {
+window.onload = function () {
     timerItem.innerHTML = `##`;
     scoreItem.innerHTML = `##`;
     highScore = localStorage.getItem("highScore");
-    if (highScore > 1)
-    {
+    if (highScore > 1) {
         highScoreItem.innerHTML = `${highScore}`;
     }
-    else
-    {
+    else {
         highScoreItem.innerHTML = `0`;
         highScore = 0;
     }
@@ -49,12 +47,12 @@ class GameObject {
 
     // Modify inputs to allow for screen wrapping, then set position
     setPosition(x, y) {
-        let position = this.getFuturePosition(x, y);
+        let position = GameObject.getPosition(x, y);
         this.x = position.x;
         this.y = position.y;
     }
 
-    getFuturePosition(x, y) {
+    static getPosition(x, y) {
         while (x < 0) {
             x += width;
         }
@@ -80,8 +78,8 @@ class GameObject {
 }
 
 let areSamePosition = (position1, position2) => {
-        return (position1.x == position2.x && position1.y == position2.y);
-    }
+    return (position1.x == position2.x && position1.y == position2.y);
+}
 
 const createGrid = (width, height) => {
     let grid = document.querySelector(`#grid`);
@@ -96,12 +94,10 @@ const createGrid = (width, height) => {
 }
 
 let keyPressed = (input) => {
-    if (keysPressed.length > 4)
-    {
+    if (keysPressed.length > 4) {
         keysPressed.splice(0, keysPressed.length);
     }
-    if (!input.repeat)
-    {
+    if (!input.repeat) {
         keysPressed.push(input.key);
         if (keysPressed.length == 1 && timer > 0) {
             clearInterval(screenInterval);
@@ -112,10 +108,8 @@ let keyPressed = (input) => {
 }
 
 let keyReleased = (input) => {
-    for (let i = 0; i < keysPressed.length; i++)
-    {
-        if (keysPressed[i] == input.key)
-        {
+    for (let i = 0; i < keysPressed.length; i++) {
+        if (keysPressed[i] == input.key) {
             keysPressed.splice(i, 1);
         }
     }
@@ -126,8 +120,7 @@ let keyReleased = (input) => {
 
 let timerUpdate = () => {
     timer -= 1;
-    if (timer <= 0)
-    {
+    if (timer <= 0) {
         clearInterval(screenInterval);
         clearInterval(timerInterval);
     }
@@ -138,10 +131,8 @@ let updateScreen = () => {
     // Moving player
     let xMovement = 0;
     let yMovement = 0;
-    for (let i = 0; i < keysPressed.length; i++)
-    {
-        switch (keysPressed[i])
-        {
+    for (let i = 0; i < keysPressed.length; i++) {
+        switch (keysPressed[i]) {
             // W
             case `w`:
                 yMovement -= 1;
@@ -162,74 +153,85 @@ let updateScreen = () => {
     }
     let player = objects[0];
     // Object collision
-    if (player != undefined && keysPressed.length > 0)
-    {
-        for (let i = 1; i < objects.length; i++)
-        {
+    let positionsToUpdate = [];
+    let oldPlayerPosition;
+    if (player != undefined && keysPressed.length > 0) {
+        oldPlayerPosition = GameObject.getPosition(player.x, player.y);
+        let futureHorizontal = GameObject.getPosition(player.x + xMovement, player.y);
+        let futureVertical = GameObject.getPosition(player.x, player.y + yMovement);
+        let futureBoth = GameObject.getPosition(player.x + xMovement, player.y + yMovement);
+        let xChange = xMovement;
+        let yChange = yMovement;
+        let sameHorizontal = false;
+        let sameVertical = false;
+        let sameBoth = false;
+        let goalPosition;
+        for (let i = 1; i < objects.length; i++) {
             let object = objects[i];
-            switch (object.name)
-            {
+            switch (object.name) {
                 case "obstacle":
-                    let verticalPriority = keysPressed[0] == `w` || keysPressed[0] == `s`;
-
-                    // if (player.x + xMovement == object.x && player.y + yMovement == object.y)
-                    // {
-                    //     xMovement = 0;
-                    //     yMovement = 0;
-                    // }
-
-                    let futureHorizontal = player.getFuturePosition(player.x + xMovement, player.y);
-                    let futureVertical = player.getFuturePosition(player.x, player.y + yMovement);
-                    let futureBoth = player.getFuturePosition(player.x + xMovement, player.y + yMovement);
                     let obstaclePosition = {
                         x: object.x,
                         y: object.y
                     };
-
-                    let sameHorizontal = areSamePosition(futureHorizontal, obstaclePosition);
-                    let sameVertical = areSamePosition(futureVertical, obstaclePosition);
-                    let sameBoth = areSamePosition(futureBoth, obstaclePosition);
-
-                    let xChange = xMovement;
-                    let yChange = yMovement;
-                    if (xMovement != 0 || yMovement != 0) {
-                        if ((yMovement == 0 && xMovement != 0 && sameHorizontal) || (yMovement != 0 && xMovement != 0 && (sameBoth || (sameHorizontal && sameVertical && !sameBoth)))) {
-                            xChange = 0;
-                        }
-                        if ((yMovement != 0 && xMovement == 0 && sameVertical) || (yMovement != 0 && xMovement != 0 && (sameBoth || (sameHorizontal && sameVertical && !sameBoth)))) {
-                            yChange = 0;
-                        }
+                    if (areSamePosition(futureHorizontal, obstaclePosition)) {
+                        sameHorizontal = true;
                     }
-                    xMovement = xChange;
-                    yMovement = yChange;
+                    if (areSamePosition(futureVertical, obstaclePosition)) {
+                        sameVertical = true;
+                    }
+                    if (areSamePosition(futureBoth, obstaclePosition)) {
+                        sameBoth = true;
+                    }
 
                     break;
                 case "goal":
-                    if (player.x + xMovement == object.x && player.y + yMovement == object.y)
-                    {
-                        placeObjects();
-                        score++;
-                        scoreItem.innerHTML = `${score}`;
-                        if (score > highScore)
-                        {
-                            highScore = score;
-                            localStorage.setItem("highScore", highScore);
-                            highScoreItem.innerHTML = `${highScore}`;
-                        }
-                        timer += scoreTimeIncrease + 1;
-                        timerUpdate();
-                    }
+                    goalPosition = {
+                        x: object.x,
+                        y: object.y
+                    };
                     break;
             }
         }
+        if ((yMovement == 0 && xMovement != 0 && sameHorizontal) || (yMovement != 0 && xMovement != 0 && ((sameBoth && sameHorizontal) || (sameVertical && sameHorizontal) || (sameBoth && !sameVertical && !sameHorizontal)))) {
+            xChange = 0;
+        }
+        if ((yMovement != 0 && xMovement == 0 && sameVertical) || (yMovement != 0 && xMovement != 0 && ((sameBoth && sameVertical) || (sameVertical && sameHorizontal) || (sameBoth && !sameVertical && !sameHorizontal)))) {
+            yChange = 0;
+        }
+        xMovement = xChange;
+        yMovement = yChange;
         player.setPosition(player.x + xMovement, player.y + yMovement);
+        if (areSamePosition(goalPosition, GameObject.getPosition(player.x, player.y))) {
+            placeObjects();
+            score++;
+            scoreItem.innerHTML = `${score}`;
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem("highScore", highScore);
+                highScoreItem.innerHTML = `${highScore}`;
+            }
+            timer += scoreTimeIncrease + 1;
+            timerUpdate();
+        }
     }
 
     let grid = document.querySelector(`#grid`);
     let gridItems = document.querySelectorAll(`.gridObject`);
     for (let i = 0; i < gridItems.length; i++) {
         let item = gridItems[i];
-        item.style.backgroundColor = `white`;
+        if (oldPlayerPosition != undefined && player != undefined) {
+            if (areSamePosition(oldPlayerPosition, GameObject.getPosition(i % height, i / width))) {
+                item.style.backgroundColor = `green`;
+                // item.style.transition = `background-color 200ms`;
+            }
+            else {
+                item.style.backgroundColor = `white`;
+            }
+        }
+        else {
+            item.style.backgroundColor = `white`;
+        }
         item.style.minWidth = `${grid.style.width / width}px`;
         item.style.minHeight = `${grid.style.height / height}px`;
     }
@@ -258,21 +260,16 @@ let updateScreen = () => {
 let makeObjects = (name, howMany) => {
     let newX;
     let newY;
-    for (let i = 0; i < howMany; i)
-    {
-        console.log(i);
+    for (let i = 0; i < howMany; i) {
         newX = Math.floor(Math.random() * width);
         newY = Math.floor(Math.random() * height);
-        if (objects.length == 1)
-        {
-            if (newX != objects[0].x && newY != objects[0].y)
-            {
+        if (objects.length == 1) {
+            if (newX != objects[0].x && newY != objects[0].y) {
                 objects.push(new GameObject(name, newX, newY));
                 i++;
             }
         }
-        else if (newX != objects[0].x && newY != objects[0].y && newX != objects[1].x && newY != objects[1].y)
-        {
+        else if (newX != objects[0].x && newY != objects[0].y && newX != objects[1].x && newY != objects[1].y) {
             objects.push(new GameObject(name, newX, newY));
             i++;
         }
@@ -289,13 +286,12 @@ let start = () => {
     clearInterval(screenInterval);
     clearInterval(timerInterval);
     createGrid(width, height);
-    if (objects.length > 0)
-    {
+    if (objects.length > 0) {
         objects.splice(0, objects.length);
     }
     let player = new GameObject("player", width / 2 - 1, height / 2 - 1);
     objects.push(player);
-    
+
     placeObjects();
 
     timer = baseTimer;
@@ -306,7 +302,7 @@ let start = () => {
     timerInterval = setInterval(timerUpdate, 1000);
 }
 
-document.addEventListener("keydown", function(eventInput) { keyPressed(eventInput) });
-document.addEventListener("keyup", function(eventInput) { keyReleased(eventInput) });
+document.addEventListener("keydown", function (eventInput) { keyPressed(eventInput) });
+document.addEventListener("keyup", function (eventInput) { keyReleased(eventInput) });
 let startButton = document.querySelector("#start");
-startButton.addEventListener("click", function() { start() });
+startButton.addEventListener("click", function () { start() });

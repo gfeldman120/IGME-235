@@ -6,14 +6,39 @@
     <title>Proposal</title>
 </head>
 <body>
-    <h1>Proposal</h1>
+    <h1 id="documentation">Documentation (<a href="#proposal">Proposal</a> at bottom)</h1>
+    <h2>Process</h2>
+    <p>The first thing I did was make the GameObject class and get things appearing in an HTML grid. I needed to make sure that things were displaying exactly to where I needed them.
+    <br>Following that, I got player input working through adding events that register on the "document." This ensures that the player doesn't have to click into the grid to move.
+    <br>Then, I focused on collision. This took the most time due to problem solving: I wanted the player to be allowed to "slide" on surfaces if they were moving diagonally but could only move in 1 direction.
+    <br>Once this was done, I went about implementing the score system using simple position checking with the goal object and the local storage system for the high score.
+    <br>I recieved feedback that the player movement felt too "jagged" so I played around with CSS transitions to create a trail behind the player.
+    <br>Finally, I went about styling the page so it was (at least somewhat) appealing to look at. It was suggested that I use gradients for certain elements - I'm glad with how it came out (though I'm no graphic designer)!
+    </p>
+    <h2>Sources</h2>
+    <ul>
+        <li><a href="https://freesound.org/people/TheDweebMan/sounds/" target="_blank">Freesound.org: 8-Bit sounds from "TheDweebMan"</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLAudioElement" target="_blank">MDN Documentation: HTMLAudioElement (Playing audio in Javascript)</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export" target="_blank">MDN Documentation: Export statement (allow other files access to data)</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import" target="_blank">MDN Documentation: Import statement (taking data from another file)</a></li>
+        <li><a href="https://www.w3schools.com/css/css3_transitions.asp" target="_blank">W3Schools CSS Documentation: CSS transitions (player trail + game over)</a></li>
+    </ul>
+    <h2>Meeting requirements</h2>
+    <ol>
+        <li>Functional: Uses Javascript + browser DOM, only needs button click + WASD, hasn't been done in class, no errors (that I've found)</li>
+        <li>Design & Interaction: Simple colors that don't hurt the eyes, simple labels are easy to read, basic instruction provided, works on 1024 x 768 at minimum</li>
+        <li>Media: No image files present - therefore no need to optimize, SFX used to supplement visual information</li>
+        <li>HTML/CSS: HTML and CSS validated before submission, all CSS is external, HTML goes in order of page elements from top to bottom, left to right (in this order)</li>
+        <li>Code Conventions: GameObject class is used, only "let" and "const" are used, functions used to avoid repetition, GameObject class is its own file, variable and function names are lowercase, all functions + some extra sections commented, no console.log</li>
+    </ol>
+    <h1 id="proposal">Proposal (<a href="#documentation">Documentation</a> at top)</h1>
     <p>Due to the limited time frame for this project, I'm keeping my game simple. The player will be represented by a green cube. Their objective is to reach a blue cube within the given time frame. Randomly placed red cubes will block the player's path.
     <br>There is also a timer outside of the game view. If the timer runs out, the player must restart. The timer is extended by hitting the blue cube. When the blue cube is hit, it will move to a new location.
     <br>The red cubes will also swap places when the blue cube is hit or when the game starts. The player can wrap around the screen if need be.
     </p>
-    <h1>Proposed Design</h1>
+    <h2>Proposed Design</h2>
     <img src="src/gamedesign.png" alt="The proposed screen layout.">
-    <h1>Notes</h1>
+    <h2>Notes</h2>
     <ul>
         <li>If the game needs proper visuals, I can make the cubes into different images (ie, a mouse, cheese and bricks)</li>
         <li>Sound effects will play when the game starts, if the player tries to walk into an obstacle, if the player walks into the objective and when the game ends</li>

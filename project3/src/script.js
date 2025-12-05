@@ -1,3 +1,6 @@
+// Importing GameObject class
+import GameObject from './GameObject.js';
+
 // Audio files
 const gameStartSFX = new Audio(`src/gameStart.wav`);
 const timeLowSFX = new Audio(`src/timeLow.wav`);
@@ -13,6 +16,7 @@ const scoreTimeIncrease = 3;
 const obstacleCount = (width * height) / 10;
 const screenTimer = 50;
 const trailTimer = 500;
+export default { width, height };
 
 // Important information
 const objects = [];
@@ -46,49 +50,6 @@ window.onload = function () {
     document.addEventListener("keyup", function (eventInput) { keyReleased(eventInput) });
     let startButton = document.querySelector("#start");
     startButton.addEventListener("click", function () { start() });
-}
-
-// GameObject class
-class GameObject {
-    // Fields
-    name;
-    x;
-    y;
-    
-    // Constructor
-    constructor(name, x, y) {
-        this.name = name;
-        this.x = x;
-        this.y = y;
-    }
-
-    // Modify inputs to allow for screen wrapping, then set position
-    setPosition(x, y) {
-        let position = GameObject.getPosition(x, y);
-        this.x = position.x;
-        this.y = position.y;
-    }
-
-    // Create a position object that accounts for screen wrapping
-    static getPosition(x, y) {
-        while (x < 0) {
-            x += width;
-        }
-        while (x >= width) {
-            x -= width;
-        }
-        while (y < 0) {
-            y += height;
-        }
-        while (y >= height) {
-            y -= height;
-        }
-        let position = {
-            x: x,
-            y: y
-        };
-        return position;
-    }
 }
 
 // Check to see if 2 positions overlap

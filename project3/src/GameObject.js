@@ -1,6 +1,6 @@
 // Screen size values required
-import width from './script.js';
-import height from './script.js';
+import { "width" as width }  from './script.js';
+import { "height" as height } from './script.js';
 
 // GameObject class
 export default class GameObject {

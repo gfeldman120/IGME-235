@@ -9,8 +9,8 @@ const collectSFX = new Audio(`src/collect.wav`);
 const beatHighScoreSFX = new Audio(`src/beatHighScore.wav`);
 
 // Variables that change the game
-const width = 50;
-const height = 50;
+export const width = 50;
+export const height = 50;
 const baseTimer = 20;
 const scoreTimeIncrease = 3;
 const obstacleCount = (width * height) / 10;
@@ -24,12 +24,12 @@ const keysPressed = [];
 let screenInterval;
 let timerInterval;
 let timerItem = document.querySelector("#timer");
-let timer;
+let timer = 0;
 let scoreItem = document.querySelector("#score");
-let score;
+let score = 0;
 let highScoreItem = document.querySelector("#highScore");
-let highScore;
-let highScoreForThisRun;
+let highScore = 0;
+let highScoreForThisRun = 0;
 let updateGradients = false;
 const gradients = [];
 
@@ -199,7 +199,7 @@ let updateScreen = () => {
                 localStorage.setItem("highScore", highScore);
                 highScoreItem.innerHTML = `${highScore}`;
             }
-            if (score == highScoreForThisRun + 1 && highScoreForThisRun != 0) {
+            if (score == highScoreForThisRun + 1 && highScoreForThisRun > 0) {
                 beatHighScoreSFX.play();
             }
             else {
@@ -312,7 +312,7 @@ let placeObjects = () => {
 // When the start button is pressed, ready the game
 let start = () => {
     gameStartSFX.play();
-    highScoreForThisRun = highScore;
+    highScoreForThisRun = Math.floor(highScore);
     clearInterval(screenInterval);
     clearInterval(timerInterval);
     createGrid(width, height);

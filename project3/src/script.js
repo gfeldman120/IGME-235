@@ -1,7 +1,7 @@
 // TO DO
 // - Styling
 // - Better diagonal collision
-// - Documentation
+// - Documentation + comments
 
 // 0,0 is top left, both width and height must be even
 const width = 50;
@@ -9,6 +9,7 @@ const height = 50;
 const baseTimer = 21;
 const scoreTimeIncrease = 7;
 const obstacleCount = (width * height) / 10;
+const screenTimer = 50;
 
 const objects = [];
 const keysPressed = [];
@@ -102,6 +103,11 @@ let keyPressed = (input) => {
     if (!input.repeat)
     {
         keysPressed.push(input.key);
+        if (keysPressed.length == 1 && timer > 0) {
+            clearInterval(screenInterval);
+            screenInterval = setInterval(updateScreen, screenTimer);
+            updateScreen();
+        }
     }
 }
 
@@ -112,6 +118,9 @@ let keyReleased = (input) => {
         {
             keysPressed.splice(i, 1);
         }
+    }
+    if (keysPressed.length == 0) {
+        clearInterval(screenInterval);
     }
 }
 
@@ -293,7 +302,7 @@ let start = () => {
     timerItem.innerHTML = `${timer}`;
     score = 0;
     scoreItem.innerHTML = `${score}`;
-    screenInterval = setInterval(updateScreen, 50);
+    updateScreen();
     timerInterval = setInterval(timerUpdate, 1000);
 }
 

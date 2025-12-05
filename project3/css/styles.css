@@ -1,3 +1,7 @@
+* {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
 body {
     display: grid;
     margin: 0px;
@@ -6,23 +10,92 @@ body {
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 5fr;
     border: 1px solid black;
+    background-image: linear-gradient(to right, rgb(255, 225, 225), rgb(225, 225, 255));
 }
 
 #sidebar {
+    position: relative;
+    height: 100vh;
+    width: 15vw;
     grid-column: 1;
     border-right: 10px solid black;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-image: linear-gradient(to right, white, rgb(200, 200, 200));
+    overflow: scroll;
+}
+
+#top {
+    display: grid;
+    font-size: 1.2em;
+    align-items: center;
+}
+
+#timeTitle {
+    grid-column: 1;
+    grid-row: 1;
+    text-align: left;
+}
+
+#timer {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: right;
+    font-size: 1.7em;
+}
+
+#scoreTitle {
+    grid-column: 1;
+    grid-row: 2;
+    text-align: left;
+}
+
+#score {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: right;
+    font-size: 1.7em;
+}
+
+#highScoreTitle {
+    grid-column: 1;
+    grid-row: 3;
+    text-align: left;
+}
+
+#highScore {
+    grid-column: 2;
+    grid-row: 3;
+    text-align: right;
+    font-size: 1.7em;
+}
+
+#bottom {
+    position: absolute;
+    bottom: 10px;
+    width: 15vw;
+}
+
+#start {
+    width: 100%;
+    height: 100%;
+    font-size: 3em;
 }
 
 #grid {
     grid-column: 2;
     margin: auto;
-    margin-top: 1%;
-    margin-bottom: 1%;
     width: 90vh;
     height: 90vh;
     padding: 0px;
     display: grid;
     border: 10px solid black;
+    background-color: rgb(225, 225, 225);
+}
+
+#grid h1 {
+    margin: auto;
+    font-size: 2em;
 }
 
 .gridObject {

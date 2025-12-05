@@ -1,16 +1,20 @@
-// TO DO
-// - Styling
-// - Better diagonal collision
-// - Documentation + comments
+// Audio files
+const gameStartSFX = new Audio(`src/gameStart.wav`);
+const timeLowSFX = new Audio(`src/timeLow.wav`);
+const timeOutSFX = new Audio(`src/timeOut.wav`);
+const collectSFX = new Audio(`src/collect.wav`);
+const beatHighScoreSFX = new Audio(`src/beatHighScore.wav`);
 
-// 0,0 is top left, both width and height must be even
+// Variables that change the game
 const width = 50;
 const height = 50;
-const baseTimer = 21;
-const scoreTimeIncrease = 7;
+const baseTimer = 20;
+const scoreTimeIncrease = 3;
 const obstacleCount = (width * height) / 10;
 const screenTimer = 50;
+const trailTimer = 500;
 
+// Important information
 const objects = [];
 const keysPressed = [];
 let screenInterval;
@@ -21,7 +25,11 @@ let scoreItem = document.querySelector("#score");
 let score;
 let highScoreItem = document.querySelector("#highScore");
 let highScore;
+let highScoreForThisRun;
+let updateGradients = false;
+const gradients = [];
 
+// Setting default text and high score text
 window.onload = function () {
     timerItem.innerHTML = `##`;
     scoreItem.innerHTML = `##`;
@@ -33,12 +41,21 @@ window.onload = function () {
         highScoreItem.innerHTML = `0`;
         highScore = 0;
     }
+    // Add key pressed events to the entire page, as well as an event for clicking the start button
+    document.addEventListener("keydown", function (eventInput) { keyPressed(eventInput) });
+    document.addEventListener("keyup", function (eventInput) { keyReleased(eventInput) });
+    let startButton = document.querySelector("#start");
+    startButton.addEventListener("click", function () { start() });
 }
 
+// GameObject class
 class GameObject {
+    // Fields
     name;
     x;
     y;
+    
+    // Constructor
     constructor(name, x, y) {
         this.name = name;
         this.x = x;
@@ -52,6 +69,7 @@ class GameObject {
         this.y = position.y;
     }
 
+    // Create a position object that accounts for screen wrapping
     static getPosition(x, y) {
         while (x < 0) {
             x += width;
@@ -71,16 +89,14 @@ class GameObject {
         };
         return position;
     }
-
-    static getEmpty(x, y) {
-        return new GameObject("empty", x, y);
-    }
 }
 
+// Check to see if 2 positions overlap
 let areSamePosition = (position1, position2) => {
     return (position1.x == position2.x && position1.y == position2.y);
 }
 
+// Create a grid of HTML elements based on the width and height constants, then update the screen
 const createGrid = (width, height) => {
     let grid = document.querySelector(`#grid`);
     grid.style.gridTemplateColumns = `repeat(${width}, 1fr)`;
@@ -93,6 +109,8 @@ const createGrid = (width, height) => {
     updateScreen();
 }
 
+// If a WASD key is pressed, add it to the inputs array (or trim the array if something is wrong)
+// Reset the movement/update screen interval to be after 1st key press
 let keyPressed = (input) => {
     if (keysPressed.length > 4) {
         keysPressed.splice(0, keysPressed.length);
@@ -107,6 +125,7 @@ let keyPressed = (input) => {
     }
 }
 
+// Remove the pressed key if it exists and, if no keys are pressed afterwards, stop updating movement/the screen
 let keyReleased = (input) => {
     for (let i = 0; i < keysPressed.length; i++) {
         if (keysPressed[i] == input.key) {
@@ -118,17 +137,28 @@ let keyReleased = (input) => {
     }
 }
 
+// Subtract a second from the timer and stop the game if the timer hits 0
 let timerUpdate = () => {
     timer -= 1;
     if (timer <= 0) {
+        timeOutSFX.play();
         clearInterval(screenInterval);
         clearInterval(timerInterval);
+        let gridItems = document.querySelectorAll(`.gridObject`);
+        for (let i = 0; i < gridItems.length; i++) {
+            gridItems[i].style.transition = `background-color 1000ms`;
+            gridItems[i].style.backgroundColor = `rgb(200, 200, 200)`;
+        }
+    }
+    else if (timer <= 5) {
+        timeLowSFX.play();
     }
     timerItem.innerHTML = `${timer}`;
 }
 
+// Handle player movement and update the screen
 let updateScreen = () => {
-    // Moving player
+    // Use pressed keys to figure out where the player wants to go
     let xMovement = 0;
     let yMovement = 0;
     for (let i = 0; i < keysPressed.length; i++) {
@@ -151,9 +181,8 @@ let updateScreen = () => {
                 break;
         }
     }
+    // Save a reference to the player and see where the player might be going
     let player = objects[0];
-    // Object collision
-    let positionsToUpdate = [];
     let oldPlayerPosition;
     if (player != undefined && keysPressed.length > 0) {
         oldPlayerPosition = GameObject.getPosition(player.x, player.y);
@@ -166,14 +195,12 @@ let updateScreen = () => {
         let sameVertical = false;
         let sameBoth = false;
         let goalPosition;
+        // See if any objects in play overlap with the player's potential future positions
         for (let i = 1; i < objects.length; i++) {
             let object = objects[i];
             switch (object.name) {
                 case "obstacle":
-                    let obstaclePosition = {
-                        x: object.x,
-                        y: object.y
-                    };
+                    let obstaclePosition = GameObject.getPosition(object.x, object.y);
                     if (areSamePosition(futureHorizontal, obstaclePosition)) {
                         sameHorizontal = true;
                     }
@@ -186,13 +213,11 @@ let updateScreen = () => {
 
                     break;
                 case "goal":
-                    goalPosition = {
-                        x: object.x,
-                        y: object.y
-                    };
+                    goalPosition = GameObject.getPosition(object.x, object.y);
                     break;
             }
         }
+        // Use overlap information to determine if the player cannot go in a given direction and update movement accordingly
         if ((yMovement == 0 && xMovement != 0 && sameHorizontal) || (yMovement != 0 && xMovement != 0 && ((sameBoth && sameHorizontal) || (sameVertical && sameHorizontal) || (sameBoth && !sameVertical && !sameHorizontal)))) {
             xChange = 0;
         }
@@ -202,7 +227,9 @@ let updateScreen = () => {
         xMovement = xChange;
         yMovement = yChange;
         player.setPosition(player.x + xMovement, player.y + yMovement);
+        // After moving, if the player is on the goal object, increment the score and reset obstacles
         if (areSamePosition(goalPosition, GameObject.getPosition(player.x, player.y))) {
+            updateGradients = true;
             placeObjects();
             score++;
             scoreItem.innerHTML = `${score}`;
@@ -211,19 +238,38 @@ let updateScreen = () => {
                 localStorage.setItem("highScore", highScore);
                 highScoreItem.innerHTML = `${highScore}`;
             }
+            if (score == highScoreForThisRun + 1 && highScoreForThisRun != 0) {
+                beatHighScoreSFX.play();
+            }
+            else {
+                collectSFX.play();
+            }
             timer += scoreTimeIncrease + 1;
             timerUpdate();
         }
     }
-
+    // Get the HTML grid and set colors to match the objects array
     let grid = document.querySelector(`#grid`);
     let gridItems = document.querySelectorAll(`.gridObject`);
     for (let i = 0; i < gridItems.length; i++) {
         let item = gridItems[i];
+        let itemPosition = GameObject.getPosition(Math.floor(i % width), Math.floor(i / width));
+        // If this position was the player's last position, make it fade from green to white, creating the effect of a trail behind the player
         if (oldPlayerPosition != undefined && player != undefined) {
-            if (areSamePosition(oldPlayerPosition, GameObject.getPosition(i % height, i / width))) {
+            if (areSamePosition(oldPlayerPosition, itemPosition)) {
                 item.style.backgroundColor = `green`;
-                // item.style.transition = `background-color 200ms`;
+                item.style.transition = `background-color ${trailTimer}ms`;
+                item.style.backgroundColor = `white`;
+                disableTransition(item);
+            }
+            else {
+                item.style.backgroundColor = `white`;
+            }
+        }
+        // If the player runs into a position that is part of the trail, reset it immediately
+        else if (player != undefined) {
+            if (areSamePosition(GameObject.getPosition(player.x, player.y), itemPosition)) {
+                item.style.transition = `background-color 0ms`;
             }
             else {
                 item.style.backgroundColor = `white`;
@@ -232,43 +278,62 @@ let updateScreen = () => {
         else {
             item.style.backgroundColor = `white`;
         }
+        item.style.backgroundImage = `none`;
+        // Ensure grid items don't squish themselves
         item.style.minWidth = `${grid.style.width / width}px`;
         item.style.minHeight = `${grid.style.height / height}px`;
     }
-
+    // Gradients should only be created on game start and goal hit: This ensures that they aren't done every screen update
+    if (updateGradients) {
+        gradients.slice(0, gradients.length);
+    }
+    // Update visuals on the screen for each position
     for (let i = 0; i < objects.length; i++) {
         let item = gridItems[objects[i].y * height + objects[i].x];
         switch (objects[i].name) {
             case "player":
-                // If using images, this is where you set the image of the player grid item to whatever
-                // item.innerHTML = `<img src="src/pixel.jpg" alt="A pixel.">`;
-                // let image = item.querySelector("img");
-                // image.style.width = `100%`;
-                // image.style.height = `100%`;
                 item.style.backgroundColor = "green";
                 break;
             case "obstacle":
-                item.style.backgroundColor = "red";
+                if (updateGradients) {
+                    gradients.push(`linear-gradient(${Math.floor(Math.random() * 360)}deg, red, rgb(150,0,0))`);
+                }
+                item.style.backgroundImage = gradients[i - 1];
                 break;
             case "goal":
-                item.style.backgroundColor = "blue";
+                if (updateGradients) {
+                    gradients.push(`linear-gradient(${Math.floor(Math.random() * 360)}deg, blue, rgb(0,0,100))`);
+                }
+                item.style.backgroundImage = gradients[i - 1];
                 break;
         }
     }
+    if (updateGradients) {
+        updateGradients = false;
+    }
 }
 
+// Once an item is done transitioning, make it stop to allow for consistent behavior later
+let disableTransition = (item) => {
+    let savedItem = item;
+    setInterval(function () { savedItem.style.transition = `background-color 0ms` }, 500);
+}
+
+// Make objects with a given name and quantity
 let makeObjects = (name, howMany) => {
     let newX;
     let newY;
     for (let i = 0; i < howMany; i) {
         newX = Math.floor(Math.random() * width);
         newY = Math.floor(Math.random() * height);
+        // If only the player exists, put the goal somewhere that isn't the player
         if (objects.length == 1) {
             if (newX != objects[0].x && newY != objects[0].y) {
                 objects.push(new GameObject(name, newX, newY));
                 i++;
             }
         }
+        // Ensure this isn't the player or goal
         else if (newX != objects[0].x && newY != objects[0].y && newX != objects[1].x && newY != objects[1].y) {
             objects.push(new GameObject(name, newX, newY));
             i++;
@@ -276,33 +341,30 @@ let makeObjects = (name, howMany) => {
     }
 }
 
+// Get rid of all objects, except for the player, and make new ones
 let placeObjects = () => {
     objects.splice(1, objects.length - 1);
     makeObjects("goal", 1);
     makeObjects("obstacle", obstacleCount);
 }
 
+// When the start button is pressed, ready the game
 let start = () => {
+    gameStartSFX.play();
+    highScoreForThisRun = highScore;
     clearInterval(screenInterval);
     clearInterval(timerInterval);
     createGrid(width, height);
-    if (objects.length > 0) {
-        objects.splice(0, objects.length);
-    }
+    // Make the player object - this only happens when the game starts
     let player = new GameObject("player", width / 2 - 1, height / 2 - 1);
     objects.push(player);
-
     placeObjects();
-
+    // Setup the timer and corresponding HTML elements
     timer = baseTimer;
     timerItem.innerHTML = `${timer}`;
     score = 0;
     scoreItem.innerHTML = `${score}`;
+    updateGradients = true;
     updateScreen();
     timerInterval = setInterval(timerUpdate, 1000);
 }
-
-document.addEventListener("keydown", function (eventInput) { keyPressed(eventInput) });
-document.addEventListener("keyup", function (eventInput) { keyReleased(eventInput) });
-let startButton = document.querySelector("#start");
-startButton.addEventListener("click", function () { start() });
